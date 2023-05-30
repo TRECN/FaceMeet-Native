@@ -1,6 +1,15 @@
-import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
-import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Modal,
+  BackHandler,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon1 from 'react-native-vector-icons/AntDesign';
+
 import {TextInput} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,11 +30,18 @@ const GradientText = (props: Props) => {
 };
 
 const Home = ({navigation}: any) => {
-  const [name, setName] = useState<string>('');
-  const [Uid, setUid] = useState<string>();
+  const [name, setName] = useState<string>('Rishabh');
+  const [signInTab, setSignInTab] = useState(false);
+  const [signUpTab, setSignUpTab] = useState(false);
+  const [email,setEmail]=useState('')
+  const [pass,setPass]=useState('')
+
+  const [secureTxt,setSecureTxt] = useState(true)
   const uid = (name: string) => {
     return name + '_' + Date.now().toString();
   };
+
+
 
   const handleEnter = () => {
     navigation.replace('MainScreen', {
@@ -43,27 +59,167 @@ const Home = ({navigation}: any) => {
         backgroundColor: '#000000',
       }}>
       <View style={styles.container}>
-        <View style={{}}>
+        <View style={{alignItems: 'center'}}>
           <Icon name="meetup" size={200} color="#0099ff" />
         </View>
-        <View style={{paddingVertical: 40}}>
+        <View style={{paddingVertical: 40, alignItems: 'center'}}>
+          <GradientText style={{...styles.text, paddingBottom: 5}}>
+            Welcome To
+          </GradientText>
+
           <GradientText style={styles.text}>FACE MEET</GradientText>
         </View>
-        <View style={styles.enterName}>
-          <TextInput
-            placeholder="name"
-            placeholderTextColor="#0099ff"
-            style={styles.textbox}
-            onChangeText={setName}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              handleEnter();
-            }}>
-            <Icon name="arrow-right" size={20} color="#0099ff" />
-          </TouchableOpacity>
+        <View style={{flexDirection: 'row'}}>
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                setSignInTab(true);
+              }}>
+              <Text style={{fontSize: 20}}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={{fontSize: 20}}> | </Text>
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                setSignUpTab(true);
+              }}>
+              <Text style={{fontSize: 20}}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
+      <Modal
+        animationType={'slide'}
+        transparent={false}
+        visible={signInTab}
+        onRequestClose={() => {
+          setSignInTab(false)
+          setSecureTxt(true)
+        }}>
+        <SafeAreaView>
+          <View
+            style={{
+              backgroundColor: 'black',
+              height: '100%',
+              justifyContent: 'center',
+            }}>
+            <View style={{alignItems: 'center'}}>
+              <Icon name="meetup" size={200} color="#0099ff" />
+              <View>
+                <Text
+                  style={{
+                    fontSize: 40,
+                    marginVertical: 20,
+                    marginHorizontal: 20,
+                  }}>
+                  SIGN IN
+                </Text>
+              </View>
+              <View style={styles.enterName}>
+                <TextInput
+                  placeholder="Email Id"
+                  placeholderTextColor="#0099ff"
+                  style={styles.textbox}
+                />
+              </View>
+              <View style={styles.enterName}>
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor="#0099ff"
+                  style={styles.textbox}
+                  secureTextEntry={secureTxt}
+                  onChangeText={()=>{
+                    setSecureTxt(true)
+                  }}
+                />
+                <TouchableOpacity style={styles.eye} onPress={()=>{
+                  setSecureTxt(!secureTxt)
+                }}>
+                <Icon1 name='eye'/>
+
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+              style={styles.RoomBtn}
+              onPress={() => {
+                handleEnter()
+              }}>
+              <Icon name="arrow-right" size={20} color="white" />
+            </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+      <Modal
+        animationType={'slide'}
+        transparent={false}
+        visible={signUpTab}
+        onRequestClose={() => {
+          setSignUpTab(false)
+          setSecureTxt(true)
+        }}>
+        <SafeAreaView>
+          <View
+            style={{
+              backgroundColor: 'black',
+              height: '100%',
+              justifyContent: 'center',
+            }}>
+            <View style={{alignItems: 'center'}}>
+              <Icon name="meetup" size={200} color="#0099ff" />
+              <View>
+                <Text
+                  style={{
+                    fontSize: 40,
+                    marginVertical: 20,
+                    marginHorizontal: 20,
+                  }}>
+                  SIGN UP
+                </Text>
+              </View>
+              <View style={styles.enterName}>
+                <TextInput
+                  placeholder="UserName"
+                  placeholderTextColor="#0099ff"
+                  style={styles.textbox}
+                />
+              </View>
+              <View style={styles.enterName}>
+                <TextInput
+                  placeholder="Email Id"
+                  placeholderTextColor="#0099ff"
+                  style={styles.textbox}
+                />
+              </View>
+              <View style={styles.enterName}>
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor="#0099ff"
+                  style={styles.textbox}
+                  secureTextEntry={secureTxt}
+                  onChangeText={()=>{
+                    setSecureTxt(true)
+                  }}
+                />
+                <TouchableOpacity style={styles.eye} onPress={()=>{
+                  setSecureTxt(!secureTxt)
+                }}>
+                <Icon1 name='eye'/>
+
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+              style={styles.RoomBtn}
+              onPress={() => {
+                // handleEnter()
+              }}>
+              <Icon name="arrow-right" size={20} color="white" />
+            </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -85,9 +241,21 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: '#181818',
     paddingHorizontal: 30,
+    marginVertical: 20,
   },
   textbox: {
     width: '100%',
     fontSize: 20,
   },
+  RoomBtn: {
+    padding: 10,
+    backgroundColor: '#0099ff',
+    borderRadius: 1000,
+  },
+  eye:{
+    position:'absolute',
+    padding:10,
+    right:20,
+    zIndex:1
+  }
 });
