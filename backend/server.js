@@ -35,7 +35,7 @@ app.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
         // check if the username already exists
-        const existingUser = await User.findOne({ username });
+        const existingUser = await User.findOne({ email });
         if (existingUser)
             return res.status(400).json({ error: "Username already exists" })
         

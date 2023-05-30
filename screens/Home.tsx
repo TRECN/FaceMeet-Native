@@ -46,7 +46,7 @@ const Home = ({navigation}: any) => {
 
   const onSignIn = async ()=> {
 
-      await axios.post('http://192.168.199.237:3000/login', {
+      await axios.post('http://192.168.199.154:3000/login', {
         email,
         password:pass,
       })
@@ -67,7 +67,7 @@ const Home = ({navigation}: any) => {
 
   const onSignUp=async()=>{
     
-    await axios.post('http://192.168.199.237:3000/register', {
+    await axios.post('http://192.168.199.154:3000/register', {
       username:userName,
       email,
       password:pass,
@@ -107,16 +107,16 @@ const Home = ({navigation}: any) => {
               onPress={() => {
                 setSignInTab(true);
               }}>
-              <Text style={{fontSize: 20}}>Sign In</Text>
+              <Text style={{fontSize: 20,color:'white'}}>Sign In</Text>
             </TouchableOpacity>
           </View>
-          <Text style={{fontSize: 20}}> | </Text>
+          <Text style={{fontSize: 20,color:'white'}}> | </Text>
           <View>
             <TouchableOpacity
               onPress={() => {
                 setSignUpTab(true);
               }}>
-              <Text style={{fontSize: 20}}>Sign Up</Text>
+              <Text style={{fontSize: 20,color:'white'}}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -172,7 +172,7 @@ const Home = ({navigation}: any) => {
                 <TouchableOpacity style={styles.eye} onPress={()=>{
                   setSecureTxt(!secureTxt)
                 }}>
-                <Icon1 name='eye'/>
+                <Icon1 name='eye' color={'white'}/>
 
                 </TouchableOpacity>
               </View>
@@ -296,6 +296,6 @@ const styles = StyleSheet.create({
     position:'absolute',
     padding:10,
     right:20,
-    zIndex:1
+    zIndex:1,
   }
 });
