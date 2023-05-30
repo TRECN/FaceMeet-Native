@@ -17,6 +17,7 @@
     "@rneui/themed": "^4.0.0-rc.7",
     "@zegocloud/zego-uikit-prebuilt-video-conference-rn": "^1.1.0",
     "@zegocloud/zego-uikit-rn": "^2.0.2",
+    "axios": "^1.4.0",
     "dotenv": "^16.0.3",
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.1",

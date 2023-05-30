@@ -11,7 +11,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 const MainScreen = ({route, navigation}: any) => {
   const userMessage = [{id:1,name:'Rishabh'}, {id:2,name:'Raj'},{id:3,name:'Tarun'},{id:4,name:'Parvej'}];
 
-  console.log(route.params.Uid);
+  console.log(route.params.name);
   return (
     <View style={styles.container}>
       <View style={{flexDirection:'row',justifyContent:'space-between'}}>

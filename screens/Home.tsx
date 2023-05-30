@@ -14,6 +14,7 @@ import {TextInput} from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
+import axios from 'axios'
 type Props = {};
 
 const GradientText = (props: Props) => {
@@ -30,9 +31,9 @@ const GradientText = (props: Props) => {
 };
 
 const Home = ({navigation}: any) => {
-  const [name, setName] = useState<string>('Rishabh');
   const [signInTab, setSignInTab] = useState(false);
   const [signUpTab, setSignUpTab] = useState(false);
+  const [userName,setUserName]=useState('')
   const [email,setEmail]=useState('')
   const [pass,setPass]=useState('')
 
@@ -43,12 +44,43 @@ const Home = ({navigation}: any) => {
 
 
 
-  const handleEnter = () => {
-    navigation.replace('MainScreen', {
-      name: name,
-      Uid: uid(name),
-    });
+  const onSignIn = async ()=> {
+
+      await axios.post('http://192.168.199.237:3000/login', {
+        email,
+        password:pass,
+      })
+      .then(response => {
+        console.log(response.data.username)
+        navigation.replace('MainScreen', {
+          name: response.data.username,
+          Uid: uid(response.data.username),
+        });  
+
+      })
+      .catch(err=>console.log(err))
+
+    
+
+    
   };
+
+  const onSignUp=async()=>{
+    
+    await axios.post('http://192.168.199.237:3000/register', {
+      username:userName,
+      email,
+      password:pass,
+    })
+    .then(response =>{
+       console.log(response.data)
+        setSignInTab(true)
+        
+        setSignUpTab(false)
+      })
+    .catch(err=>console.log(err))
+
+  }
 
   return (
     <SafeAreaView
@@ -121,6 +153,7 @@ const Home = ({navigation}: any) => {
                   placeholder="Email Id"
                   placeholderTextColor="#0099ff"
                   style={styles.textbox}
+                  onChangeText={setEmail}
                 />
               </View>
               <View style={styles.enterName}>
@@ -129,8 +162,11 @@ const Home = ({navigation}: any) => {
                   placeholderTextColor="#0099ff"
                   style={styles.textbox}
                   secureTextEntry={secureTxt}
-                  onChangeText={()=>{
+                  onChangeText={(text)=>{
                     setSecureTxt(true)
+                    setPass(text)
+                    console.log(pass)
+
                   }}
                 />
                 <TouchableOpacity style={styles.eye} onPress={()=>{
@@ -143,7 +179,7 @@ const Home = ({navigation}: any) => {
               <TouchableOpacity
               style={styles.RoomBtn}
               onPress={() => {
-                handleEnter()
+                onSignIn()
               }}>
               <Icon name="arrow-right" size={20} color="white" />
             </TouchableOpacity>
@@ -183,6 +219,7 @@ const Home = ({navigation}: any) => {
                   placeholder="UserName"
                   placeholderTextColor="#0099ff"
                   style={styles.textbox}
+                  onChangeText={setUserName}
                 />
               </View>
               <View style={styles.enterName}>
@@ -190,6 +227,7 @@ const Home = ({navigation}: any) => {
                   placeholder="Email Id"
                   placeholderTextColor="#0099ff"
                   style={styles.textbox}
+                  onChangeText={setEmail}
                 />
               </View>
               <View style={styles.enterName}>
@@ -198,8 +236,10 @@ const Home = ({navigation}: any) => {
                   placeholderTextColor="#0099ff"
                   style={styles.textbox}
                   secureTextEntry={secureTxt}
-                  onChangeText={()=>{
+                  onChangeText={(text)=>{
                     setSecureTxt(true)
+                    setPass(text)
+                    console.log(pass)
                   }}
                 />
                 <TouchableOpacity style={styles.eye} onPress={()=>{
@@ -212,7 +252,7 @@ const Home = ({navigation}: any) => {
               <TouchableOpacity
               style={styles.RoomBtn}
               onPress={() => {
-                // handleEnter()
+                onSignUp()
               }}>
               <Icon name="arrow-right" size={20} color="white" />
             </TouchableOpacity>
