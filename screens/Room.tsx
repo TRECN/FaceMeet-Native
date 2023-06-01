@@ -5,10 +5,12 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StartMeeting from '../components/StartMeeting';
+import io from 'socket.io-client';
 type Props = {};
+
 
 const Room = ({route, navigation}: any) => {
   const UserName = route.params.name;
@@ -17,11 +19,34 @@ const Room = ({route, navigation}: any) => {
   const [RoomId, setRoomId] = useState('');
   const [StartRoom, setStartRoom] = useState(false);
 
+  const [ActiveUsers, setActiveUsers] = useState([]);
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  
+
+  const JoinRoom = () => {
+    console.log('joinning room', RoomName);
+    setStartRoom(true);
+
+  };
+
+
   return (
     <View style={styles.container}>
       {StartRoom ? (
         <View>
-          <StartMeeting UserName={UserName} UserId={UserId} RoomName={RoomName} RoomId={RoomId} />
+          <StartMeeting
+            UserName={UserName}
+            UserId={UserId}
+            RoomName={RoomName}
+            RoomId={RoomId}
+            message={message}
+            messages={messages}
+            setMessage={setMessage}
+            setMessages={setMessages}
+            setActiveUsers={setActiveUsers}
+            navigation={navigation}
+          />
         </View>
       ) : (
         <View>
@@ -38,14 +63,17 @@ const Room = ({route, navigation}: any) => {
                 placeholder="Room Name"
                 placeholderTextColor="#0099ff"
                 style={styles.textbox}
-                onChangeText={setRoomName}
+                onChangeText={text => {
+                  setRoomName(text);
+                  setRoomId(RoomName + '_' + Date.now().toString());
+                }}
               />
             </View>
             <TouchableOpacity
               style={styles.RoomBtn}
               onPress={() => {
-                setRoomId(RoomName + '_' + Date.now().toString());
-                setStartRoom(true);
+                console.log(RoomId);
+                JoinRoom();
               }}>
               <Icon name="arrow-right" size={20} color="white" />
             </TouchableOpacity>

@@ -30,7 +30,7 @@ const MainScreen = ({route, navigation}: any) => {
           <TouchableOpacity style={styles.startBtn} onPress={()=>{
             navigation.push('Room',{
               name:route.params.name,
-              Uid:route.params.Uid
+              Uid:route.params.Uid,
             })
           }}>
             <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>

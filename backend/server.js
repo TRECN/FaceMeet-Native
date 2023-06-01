@@ -5,11 +5,19 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors')
 
 const app = express()
+
+const server=require('http').createServer(app)
+
+const io = require('socket.io')(server)
+
 const port = 3000
 
 //middleware
 app.use(express.json())
 app.use(cors())
+
+
+
 
 
 //connecting to database
@@ -87,6 +95,55 @@ app.post('/login',async(req,res)=>{
 app.get('/',(req,res)=>{
     res.send('welcome to auth')
 })
-app.listen(port,()=>{
+
+
+const users = []
+
+const addUser = (name, roomId) => {
+    users.push({
+        userName: name,
+        RoomId: roomId
+    })
+}
+
+
+const getRoomUsers = (roomId) => {
+    return users.filter(user => (user.RoomId == roomId))
+}
+
+const userLeave = (name) => {
+    return users.filter(user => (user.useName != name))
+}
+
+io.on('connection', (socket) => {
+    console.log("someone connected")
+    socket.on('join-room', ({ name, roomId }) => {
+        console.log('user joined room')
+        console.log(name, roomId)
+        socket.join(roomId)
+        addUser(name, roomId)
+        console.log(users)
+        socket.to(roomId).emit("user-connected", name)
+        io.to(roomId).emit('all-users', getRoomUsers(roomId))
+        socket.on('disconnect', () => {
+            socket.to(roomId).emit('user-disconnected', name)
+            socket.leave(roomId)
+            console.log(`disconnected user: ${name}`)
+            userLeave(name)
+            io.to(roomId).emit('all-users', getRoomUsers(roomId))
+        })
+        socket.on('message', (message, UserName, dt,RoomName) => {
+            console.log(UserName)
+            console.log('Recieved message:', message)
+            io.emit('message', { name: UserName, message: message, uid: dt,roomId:RoomName })
+        })
+        
+
+    })
+
+})
+
+
+server.listen(port,()=>{
     console.log(`server running on port ${port}`)
   })

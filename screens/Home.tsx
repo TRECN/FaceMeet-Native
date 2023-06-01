@@ -9,6 +9,8 @@ import {
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/AntDesign';
+import io from 'socket.io-client';
+
 
 import {TextInput} from 'react-native';
 import {TouchableOpacity} from 'react-native';
@@ -16,6 +18,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import axios from 'axios'
 type Props = {};
+
+
 
 const GradientText = (props: Props) => {
   return (
@@ -42,11 +46,18 @@ const Home = ({navigation}: any) => {
     return name + '_' + Date.now().toString();
   };
 
+  // var socket:any
+  // useEffect(()=>{
+  //   socket= io('http://192.168.107.7:3000');
+  //   return(()=>{
+  //     socket.disconnect()
+  //   })
+  // })
 
 
   const onSignIn = async ()=> {
 
-      await axios.post('http://192.168.199.154:3000/login', {
+      await axios.post('http://192.168.107.7:3000/login', {
         email,
         password:pass,
       })
@@ -67,7 +78,7 @@ const Home = ({navigation}: any) => {
 
   const onSignUp=async()=>{
     
-    await axios.post('http://192.168.199.154:3000/register', {
+    await axios.post('http://192.168.107.7:3000/register', {
       username:userName,
       email,
       password:pass,
