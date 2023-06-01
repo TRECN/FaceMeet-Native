@@ -151,7 +151,7 @@ const StartMeeting = ({
                   <View>
                     <TextInput
                       placeholder="Message"
-                      placeholderTextColor="#767578"
+                      placeholderTextColor="#0099ff"
                       value={message}
                       onChangeText={setMessage}
                       style={styles.Message}
@@ -163,7 +163,7 @@ const StartMeeting = ({
                         handleSend();
                       }}
                     >
-                      <Font name="arrow-up" size={24} color="black" />
+                      <Font name="arrow-up" size={40} color="#0099ff" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -216,16 +216,16 @@ const styles = StyleSheet.create({
     marginBottom:10
   },
   Chat:{
+    flex:1,
     margin:10,
-    backgroundColor:'#C0C0C0',
+    backgroundColor:'#0099ff',
     justifyContent:'flex-start',
     borderRadius:20,
 
   },
   TName:{
-    
+    flex:1,
     fontSize:10,
-    width:'100%',
     borderRadius:20,
     fontWeight:'bold'
     
@@ -248,6 +248,7 @@ const styles = StyleSheet.create({
     color:'white'
   },
   Message:{
-    color:'white'
+    color:'white',
+    fontSize:20
   }
 });
